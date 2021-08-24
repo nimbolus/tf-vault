@@ -8,10 +8,11 @@ Addition to vault-consul module which can be deployed on a second Vault cluster 
 
 ### Usage
 1. Deploy Vault 1 (e.g. with vault-consul) - do NOT enable auto-unseal yet.
-2. Repeat for Vault 2.
-3. Deploy vault-transit for Vault 1 and Vault 2.
-4. Enable auto-unseal for Vault 1 and init seal migration. You need to restart the Vault server pods.
-5. Repeat for Vault 2.
+2. Forward port 8200 and initialize Vault 1: `kubectl -n vault port-forward vault-0 8200`
+3. Deploy and initialize Vault 2.
+4. Deploy vault-transit for Vault 1 and Vault 2.
+5. Enable auto-unseal for Vault 1 and init seal migration. You need to restart the Vault server pods.
+6. Repeat for Vault 2.
 
 ### Import
 If a vault-consul module instance is removed entirely the data is still available in Consul. So after redeploying these lines help to import the existing data paths.
