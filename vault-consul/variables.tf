@@ -53,3 +53,7 @@ variable "auto_unseal_vault_role" {
 variable "ingress_ssl_passthrough_enable" {
   default = false
 }
+
+variable "server_replicas" {
+  default = 3
+}

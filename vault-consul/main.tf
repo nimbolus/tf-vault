@@ -21,6 +21,7 @@ resource "helm_release" "vault" {
     server:
       ha:
         enabled: true
+        replicas: ${var.server_replicas}
         config: |
           ui = true
           listener "tcp" {
