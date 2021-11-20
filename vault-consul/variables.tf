@@ -50,8 +50,10 @@ variable "auto_unseal_vault_role" {
   default = "vault-unseal"
 }
 
-variable "ingress_ssl_passthrough_enable" {
-  default = false
+variable "ingress_annotations" {
+  default = {
+    "nginx.ingress.kubernetes.io/ssl-passthrough" = "true"
+  }
 }
 
 variable "server_replicas" {

@@ -82,9 +82,9 @@ resource "helm_release" "vault" {
           mountPath: /var/run/secrets/vault-tls
       ingress:
         enabled: true
-    %{if var.ingress_ssl_passthrough_enable}
+    %{if var.ingress_annotations != {}}
         annotations: |
-          'nginx.ingress.kubernetes.io/ssl-passthrough': 'true'
+          ${indent(6, yamlencode(var.ingress_annotations))}
     %{endif}
         hosts:
           - host: ${var.vault_domain}
