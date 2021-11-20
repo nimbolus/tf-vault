@@ -7,7 +7,7 @@ variable "release_name" {
 }
 
 variable "chart_version" {
-  default = "0.12.0"
+  default = "0.17.1"
 }
 
 variable "vault_domain" {

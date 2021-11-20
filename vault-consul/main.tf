@@ -116,6 +116,6 @@ resource "kubernetes_secret" "vault_consul_ca" {
   }
 
   data = {
-    "ca.crt" = data.kubernetes_secret.consul_ca.data["tls.crt"]
+    "ca.crt" = data.kubernetes_secret.consul_ca.0.data["tls.crt"]
   }
 }
