@@ -35,6 +35,9 @@ resource "helm_release" "vault" {
             path = "${var.release_name}-vault"
             address = "${var.consul_address}"
             scheme = "https"
+    %{if var.consul_ca_secret_name != null}
+            tls_ca_file = "/var/run/secrets/consul-ca/ca.crt"
+    %{endif}
           }
           service_registration "kubernetes" {}
     %{if var.auto_unseal_enable}
@@ -62,15 +65,19 @@ resource "helm_release" "vault" {
           secretName: vault-consul-token
           secretKey: token
       volumes:
+    %{if var.consul_ca_secret_name != null}
         - name: consul-ca
           secret:
             secretName: consul-ca-cert
+    %{endif}
         - name: vault-tls
           secret:
             secretName: ${var.tls_secret_name}
       volumeMounts:
+    %{if var.consul_ca_secret_name != null}
         - name: consul-ca
           mountPath: /var/run/secrets/consul-ca
+    %{endif}
         - name: vault-tls
           mountPath: /var/run/secrets/vault-tls
       ingress:
@@ -92,6 +99,8 @@ resource "helm_release" "vault" {
 }
 
 data "kubernetes_secret" "consul_ca" {
+  count = var.consul_ca_secret_name != null ? 1 : 0
+
   metadata {
     name      = var.consul_ca_secret_name
     namespace = var.consul_namespace
@@ -99,6 +108,8 @@ data "kubernetes_secret" "consul_ca" {
 }
 
 resource "kubernetes_secret" "vault_consul_ca" {
+  count = var.consul_ca_secret_name != null ? 1 : 0
+
   metadata {
     name      = "consul-ca-cert"
     namespace = var.namespace

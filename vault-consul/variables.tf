@@ -27,7 +27,7 @@ variable "consul_namespace" {
 }
 
 variable "consul_ca_secret_name" {
-  default = "consul-consul-ca-cert"
+  default = null
 }
 
 variable "auto_unseal_enable" {
