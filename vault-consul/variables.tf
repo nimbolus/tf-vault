@@ -10,6 +10,10 @@ variable "chart_version" {
   default = "0.17.1"
 }
 
+variable "server_image_tag" {
+  default = null
+}
+
 variable "vault_domain" {
   default = "vault.cluster.local"
 }
