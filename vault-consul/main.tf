@@ -19,6 +19,10 @@ resource "helm_release" "vault" {
     global:
       tlsDisable: false
     server:
+      %{if var.server_image_tag != null}
+      image:
+        tag: ${var.server_image_tag}
+      %{endif}
       ha:
         enabled: true
         replicas: ${var.server_replicas}
@@ -82,7 +86,7 @@ resource "helm_release" "vault" {
           mountPath: /var/run/secrets/vault-tls
       ingress:
         enabled: true
-    %{if var.ingress_annotations != {}}
+    %{if var.ingress_annotations != {} }
         annotations: |
           ${indent(6, yamlencode(var.ingress_annotations))}
     %{endif}
@@ -94,6 +98,11 @@ resource "helm_release" "vault" {
           - hosts:
               - ${var.vault_domain}
             secretName: ${var.tls_secret_name}
+    %{if var.server_image_tag != null}
+    injector:
+      agentImage:
+        tag: ${var.server_image_tag}
+    %{endif}
     EOT
   ]
 }
